@@ -74,7 +74,7 @@ check_permutation(A) := block(
 )$
 
 check_elementary(A) := block(
-    [B,n, type: 0, I, i, j, k, diff_rows, scalar, found, diag_zero],
+    [B,n, type: 0, I, i, j, k, diff_rows, scalar, found, diag_zero,flag],
     
     B : to_matrix(A),
     n: length(B),
@@ -110,13 +110,15 @@ check_elementary(A) := block(
             return(1)
         ),
         found: false,
+        flag : false,
         for k:1 thru n while not found do (
             if k # i and B[i] = I[i] + I[k] * B[i][k] then (
                 found: true,
-                print("2"),
+                flag:true,
                 return(2)
             )
-        )
+        ),
+        if flag then return(2)
     ),
     
     0
@@ -195,5 +197,13 @@ random_reduced_row_echelon(n, m, x) := block(
 )$
 
 /* triangular_det(A) := block(
-    [B,]
+    [B,n,i,det],
+    B:to_matrix(A),
+    n:
+    det:1,
+    for i:1 thru 
+)$
+
+is_upper_trianngular(A):=block(
+
 )$ */
