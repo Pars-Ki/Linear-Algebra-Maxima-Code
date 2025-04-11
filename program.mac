@@ -73,3 +73,52 @@ check_permutation(A) := block(
     is_permutation
 )$
 
+check_elementary(A) := block(
+    [n, type: 0, I, i, j, k, diff_rows, scalar, found, diag_zero],
+    
+    if not matrixp(A) then return(0),
+    B : to_matrix(A),
+    n: length(B),
+    if n # length(B[1]) then return(0),
+    
+    
+    I: ident(n),
+    
+    if B = I then (
+        return(1)
+    ),
+    
+
+    diff_rows: [],
+    for i:1 thru n do (
+        if B[i] # I[i] then diff_rows: endcons(i, diff_rows)
+    ),
+    
+
+    if length(diff_rows) = 2 then (
+        [i, j]: [diff_rows[1], diff_rows[2]],
+        if B[i] = I[j] and B[j] = I[i] then (
+            return(3)
+        )
+    )
+    else if length(diff_rows) = 1 then (
+        i: diff_rows[1],
+        scalar: B[i][i],
+        if scalar = 0 then(
+             return(0)
+        ),
+        if scalar # 1 and B[i] = I[i] * scalar then (
+            return(1)
+        ),
+        found: false,
+        for k:1 thru n while not found do (
+            if k # i and B[i] = I[i] + I[k] * B[i][k] then (
+                found: true,
+                print("2"),
+                return(2)
+            )
+        )
+    ),
+    
+    0
+)$
