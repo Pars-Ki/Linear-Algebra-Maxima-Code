@@ -169,3 +169,28 @@ random_permutation(n) := block(
     ),
     B
 )$
+
+random_reduced_row_echelon(n, m, x) := block(
+    [A, pivots, i, j, k, current_row],
+    A: zeromatrix(n, m),
+    pivots: [],
+    current_row: 1,
+    
+    for j:1 thru m while current_row <= n do (
+        if random(1.0) > 0.5 then (
+            A[current_row,j]: 1,
+            pivots: endcons(j, pivots),
+            
+            for k:1 thru current_row-1 do A[k,j]: 0,
+            
+            for k:j+1 thru m do (
+                A[current_row,k]: if integerp(x) then 
+                                    random(2*x + 1) - x
+                                else 
+                                    x * (2*random(1.0) - 1)
+            ),
+            current_row: current_row + 1
+        )
+    ),
+    A
+)$
