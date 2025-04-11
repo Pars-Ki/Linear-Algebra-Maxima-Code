@@ -1,0 +1,42 @@
+block_matrix(L) := block(
+    [combined: [], rows, columnsSize: [], i, C, currentlist,output:true],
+    for sub in L do (
+        if sub = [] or not listp(sub) or length(sub)#length(L[1]) then (output:false, return(false)),
+        for i: 1 thru length(sub) do (
+        if sub = L[1] then columnsSize: append(columnsSize, [length(first(args(sub[i])))]),
+            currentlist: args(sub[i]),
+            if i = 1 then 
+                rows: currentlist
+            else if length(rows) = length(currentlist) then (
+                if columnsSize[i] # length(first(args(sub[i]))) then (output:false, return(false))
+                else (
+                    for j: 1 thru length(rows) do (
+                   rows[j]: append(rows[j], currentlist[j])
+                    )
+                )
+            )
+            else (output:false, return(false))
+        ),
+        combined: append(combined, rows)
+    ),
+    if output = false then return(false)
+    else(
+    M : apply(matrix, combined),
+    return(M)
+    )
+)$	
+
+block_diagonal_matrix(L) := block(
+     [rowCount1, columnCount1, rowCount2, columnCount2, Zeromatrice1, Zeromatrice2, primary],
+     primary:L[1],
+     for i:2 thru length(L) do(
+     rowCount1: length(primary),
+     columnCount1: length(L[i][1]),
+     rowCount2: length(L[i]),
+     columnCount2: length(primary[1]),
+     Zeromatrice1: genmatrix(lambda([i, j], 0), rowCount1, columnCount1),
+     Zeromatrice2: genmatrix(lambda([i, j], 0), rowCount2, columnCount2),
+     primary: block_matrix([[primary, Zeromatrice1],[Zeromatrice2, L[i]]])
+     ),
+     return(primary)
+)$
