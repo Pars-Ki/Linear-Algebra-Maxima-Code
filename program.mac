@@ -73,7 +73,6 @@ check_permutation(A) := block(
     is_permutation
 )$
 
-<<<<<<< HEAD
 check_elementary(A) := block(
     [n, type: 0, I, i, j, k, diff_rows, scalar, found, diag_zero],
     
