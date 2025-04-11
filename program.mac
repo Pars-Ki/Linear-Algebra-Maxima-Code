@@ -74,9 +74,8 @@ check_permutation(A) := block(
 )$
 
 check_elementary(A) := block(
-    [n, type: 0, I, i, j, k, diff_rows, scalar, found, diag_zero],
+    [B,n, type: 0, I, i, j, k, diff_rows, scalar, found, diag_zero],
     
-    if not matrixp(A) then return(0),
     B : to_matrix(A),
     n: length(B),
     if n # length(B[1]) then return(0),
@@ -194,3 +193,7 @@ random_reduced_row_echelon(n, m, x) := block(
     ),
     A
 )$
+
+/* triangular_det(A) := block(
+    [B,]
+)$ */
