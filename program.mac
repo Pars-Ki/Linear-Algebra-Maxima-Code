@@ -197,9 +197,9 @@ random_reduced_row_echelon(n, m, x) := block(
 )$
 
 triangular_det(A) := block(
-    [B,n,i,det],
+    [B,i,det],
     B:to_matrix(A),
-    n:
+    n:length(B),
     det:1,
     if is_upper_trianngular(B) or is_lower_trianngular(B) then (
         for i:1 thru n do(
