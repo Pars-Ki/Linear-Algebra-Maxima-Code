@@ -803,6 +803,22 @@ if duration1 < duration2 then print("inverse1's faster") else print("inverse2's 
 )$
 
 
+det1(A) := block(
+   [L, det:1, i, K],
+    A: to_matrix(A),
+    L:gauss_row_echelon(A),
+    K:length(L[1]),
+    if K = 0 then return(triangular_det(A))
+    else(
+    for i:1 thru K do(
+    det: det*triangular_det(L[2][i])
+    ),
+    det: det*triangular_det(L[1][K]),
+    return(det)
+    )
+)$
+
+
 det1VSdet2(A) := block(
 A: to_matrix(A),
 [start_time, end_time],
