@@ -1,0 +1,33 @@
+adjugate(A) := block(
+    [FinalMatrix, Aprim:[], x, i, j, n,Azegon],
+    n : length(A),
+    FinalMatrix: copy(A),
+    for i: 1 thru n do (
+        for j: 1 thru n do (
+        Aprim:[],
+        for r: 1 thru n do (
+            if r # i then (
+                newrow : [],
+                for c: 1 thru n do (
+                    if c # j then
+                        newrow : append(newrow, [A[r][c]])
+                ),
+                Aprim : append(Aprim, [newrow])
+            )
+        ),
+        Azegon : apply(matrix, Aprim),
+            x : (-1)^(i+j) * determinant(Azegon),
+            FinalMatrix[i][j] : x
+        )
+    ),
+    FinalMatrix : transpose(FinalMatrix),
+    return(FinalMatrix)
+)$
+
+
+
+inverse2(A) := block(
+landa: 1/determinant(A),
+inverseA: adjugate(A)*landa,
+return(inverseA)
+)$
