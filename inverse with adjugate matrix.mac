@@ -45,7 +45,7 @@ adjugate(A) := block(
             )
         ),
         Azegon : apply(matrix, Aprim),
-            x : (-1)^(i+j) * determinant(Azegon),
+            x : (-1)^(i+j) * det1(Azegon),
             FinalMatrix[i][j] : x
         )
     ),
@@ -54,13 +54,33 @@ adjugate(A) := block(
 )$
 
 
+det1(A) := block(
+   [L, det:1, i, K],
+    A: to_matrix(A),
+    L:gauss_row_echelon(A),
+    K:length(L[1]),
+    if K = 0 then return(triangular_det(A))
+    else(
+    for i:1 thru K do(
+    det: det*triangular_det(L[2][i])
+    ),
+    det: det*triangular_det(L[1][K]),
+    return(det)
+    )
+)$
+
 
 inverse2(A) := block(
 A: to_matrix(A),
-landa: 1/determinant(A),
+if det1(A) = 0 then return(false) else(
+landa: 1/det1(A),
 inverseA: adjugate(A)*landa,
 return(inverseA)
+)
 )$
+
+
+
 
 
 
