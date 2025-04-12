@@ -765,6 +765,7 @@ triangular_inverse(A) := block(
 
  inverse1(A) := block(
  [finalmatrix, E, L, K, n, P, x, last_row, is_last_row_zero],
+ A: to_matrix(A),
  L:gauss_row_echelon(A),
  K:length(L[1]),
  last_row: L[2][K][length(L[2][K])],
@@ -787,6 +788,7 @@ triangular_inverse(A) := block(
 
 inverse1VSinverse2(A) := block(
 [start_time, end_time],
+A: to_matrix(A),
 start_time: elapsed_real_time(),
 result1: inverse1(A),
 end_time: elapsed_real_time(),
@@ -802,6 +804,7 @@ if duration1 < duration2 then print("inverse1's faster") else print("inverse2's 
 
 
 det1VSdet2(A) := block(
+A: to_matrix(A),
 [start_time, end_time],
 start_time: elapsed_real_time(),
 result1: det1(A),
