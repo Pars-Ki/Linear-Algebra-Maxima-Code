@@ -210,7 +210,7 @@ triangular_det(A) := block(
     det 
 )$
 
-is_upper_trianngular(A):=block(
+is_upper_triangular(A):=block(
     [n,B,i,j,result],
     B:to_matrix(A),
     n:length(B),
@@ -225,7 +225,7 @@ is_upper_trianngular(A):=block(
     return(result)
 )$
 
-is_lower_trianngular(A):=block(
+is_lower_triangular(A):=block(
     [n,B,i,j,result],
     B:to_matrix(A),
     n:length(B),
@@ -238,4 +238,38 @@ is_lower_trianngular(A):=block(
         )
     ),
     return(result)
+)$
+
+triangular_inverse(A) := block(
+[n,I,D:[],finalmatrix,x],
+    A: to_matrix(A),
+    n: length(A),
+    finalmatrix:ident(n),
+    for x:1 thru n do
+       D:append(D,[A[x][x]]),
+    if is_lower_triangular(A) then(
+    for j:n step -1 thru 1 do(
+    	for i:n step -1 thru 1 do(
+    	I:ident(n),
+    	if i>j then(
+    		I[i][j]: -A[i][j]/D[i],
+    		finalmatrix: finalmatrix.I)
+    	)
+    ))
+    else(
+    for j:1 thru n do(
+    	for i:1 thru n do(
+    	I:ident(n),
+    	if j>i then(
+    		I[i][j]: -A[i][j]/D[i],
+    		finalmatrix: finalmatrix.I)
+    	)
+    )
+    ),
+    for x:n step -1 thru 1 do(
+    I:ident(n),
+    I[x][x]:1/A[x][x],
+    finalmatrix: finalmatrix.I
+    ),
+    return(finalmatrix)
 )$
