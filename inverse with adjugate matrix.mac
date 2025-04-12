@@ -2,6 +2,28 @@
     if matrixp(L) then L
     else apply('matrix,L)
  )$
+ 
+ 
+ inverse1(A) := block(
+ [finalmatrix, E, L, K, n, P, x, last_row, is_last_row_zero],
+ L:gauss_row_echelon(A),
+ K:length(L[1]),
+ last_row: L[2][K][length(L[2][K])],
+ is_last_row_zero: apply("and", map(lambda([x], x = 0), last_row)),
+ if K=0 then return(triangular_inverse(A))
+ else if is_last_row_zero then return(false)
+ else(
+ E:L[2],
+ n:length(A),
+ finalmatrix:ident(n),
+ for i:1 thru K do(
+ finalmatrix: E[i].finalmatrix
+ ),
+ P:triangular_inverse(L[1][K]),
+ finalmatrix: P.finalmatrix,
+ return(finalmatrix)
+ )
+ )$
 
 adjugate(A) := block(
     [FinalMatrix, Aprim:[], x, i, j, n,Azegon],
@@ -40,4 +62,19 @@ return(inverseA)
 )$
 
 
+
+inverse1VSinverse2(A) := block(
+[start_time, end_time],
+start_time: elapsed_real_time(),
+result1: inverse1(A),
+end_time: elapsed_real_time(),
+duration1: end_time - start_time,
+print("inverse1 Time:", duration1, "ms"),
+start_time: elapsed_real_time(),
+result2: inverse2(A),
+end_time: elapsed_real_time(),
+duration2: end_time - start_time,
+print("inverse2 Time:", duration2, "ms"),
+if duration1 < duration2 then print("inverse1's faster") else print("inverse2's faster")
+)$
 
