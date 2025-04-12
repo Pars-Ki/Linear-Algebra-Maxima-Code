@@ -1,5 +1,11 @@
+ to_matrix(L):=block(
+    if matrixp(L) then L
+    else apply('matrix,L)
+ )$
+
 adjugate(A) := block(
     [FinalMatrix, Aprim:[], x, i, j, n,Azegon],
+    A: to_matrix(A),
     n : length(A),
     FinalMatrix: copy(A),
     for i: 1 thru n do (
@@ -27,7 +33,11 @@ adjugate(A) := block(
 
 
 inverse2(A) := block(
+A: to_matrix(A),
 landa: 1/determinant(A),
 inverseA: adjugate(A)*landa,
 return(inverseA)
 )$
+
+
+
