@@ -1,0 +1,27 @@
+ to_matrix(L):=block(
+    if matrixp(L) then L
+    else apply('matrix,L)
+ )$
+ 
+triangular_inverse(A) := block(
+[n,I,D:[],finalmatrix,x],
+    A: to_matrix(A),
+    n: length(A),
+    finalmatrix:ident(n),
+    for x:1 thru n do
+    D:append(D,[A[x][x]]),
+    for j:n step -1 thru 1 do(
+    	for i:n step -1 thru 1 do(
+    	I:ident(n),
+    	if i>j then(
+    		I[i][j]: -A[i][j]/D[i],
+    		finalmatrix: finalmatrix.I)
+    	)
+    ),
+    for x:n step -1 thru 1 do(
+    I:ident(n),
+    I[x][x]:1/A[x][x],
+    finalmatrix: finalmatrix.I
+    ),
+    return(finalmatrix)
+)$
