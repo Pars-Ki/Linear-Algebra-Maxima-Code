@@ -765,10 +765,9 @@ triangular_inverse(A) := block(
 
  inverse1(A) := block(
  [finalmatrix, E, L, K, n, P, x, last_row, is_last_row_zero],
- A: to_matrix(A),
  L:gauss_row_echelon(A),
  K:length(L[1]),
- last_row: L[2][K][length(L[2][K])],
+ last_row: L[1][K][length(L[1][K])],
  is_last_row_zero: apply("and", map(lambda([x], x = 0), last_row)),
  if K=0 then return(triangular_inverse(A))
  else if is_last_row_zero then return(false)
@@ -788,7 +787,6 @@ triangular_inverse(A) := block(
 
 inverse1VSinverse2(A) := block(
 [start_time, end_time],
-A: to_matrix(A),
 start_time: elapsed_real_time(),
 result1: inverse1(A),
 end_time: elapsed_real_time(),
@@ -801,7 +799,6 @@ duration2: end_time - start_time,
 print("inverse2 Time:", duration2, "ms"),
 if duration1 < duration2 then print("inverse1's faster") else print("inverse2's faster")
 )$
-
 
 det1(A) := block(
    [L, det:1, i, K],
@@ -818,9 +815,37 @@ det1(A) := block(
     )
 )$
 
+det2(M) := block(
+    [n, m, det: 0, minor, i, j],
+    M: to_matrix(M),
+    remove_index(lst, idx) := block(
+        [res: []],
+        for k:1 thru length(lst) do (
+            if k # idx then res: append(res, [lst[k]])
+        ),
+        return(res)
+    ),
+    n: length(M),
+    m: length(first(M)),
+    if n = 1 then
+        return(first(first(M)))
+    else (
+        for j:1 thru m do (
+            minor: [],
+            for i:2 thru n do (
+                minor: append(minor, [remove_index(M[i], j)])
+            ),
+            det: det + (-1)^(1+j) * M[1][j] * det2(minor)
+        ),
+        return(det)
+    )
+)$
+
+
+
+
 
 det1VSdet2(A) := block(
-A: to_matrix(A),
 [start_time, end_time],
 start_time: elapsed_real_time(),
 result1: det1(A),
@@ -835,6 +860,3 @@ print("det2 Time:", duration2, "ms"),
 if duration1 < duration2 then print("det1's faster") else print("det2's faster")
 )$
 
-
-    return(finalmatrix)
-)$
